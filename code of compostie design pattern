@@ -1,0 +1,68 @@
+using System;
+using System.Collections.Generic;
+
+class IEmployee{
+    public virtual void ShowRating(){}
+}
+
+class Employee : IEmployee{
+    private string Name {get; set;}
+    private int Rating {get; set;}
+    private string Designation {get; set;}
+    
+    public Employee(string name, int rate, string dest){
+        Name = name;
+        Rating = rate;
+        Designation = dest;
+    }
+    
+    public override void ShowRating(){
+        Console.WriteLine(" \n ********** \n Employee Name : {0} Employee's Designation {2} and Rating of Employee is : {1} \n ********** \n", Name, Rating, Designation);
+    }
+}
+
+class Supervisor : IEmployee{
+    private string Name {get; set;}
+    private int Rating {get; set;}
+    private string Designation {get; set;}
+    
+    private List<IEmployee> reportees = new List<IEmployee>();
+    
+    public Supervisor(string name, int rate, string dest){
+        Name = name;
+        Rating = rate;
+        Designation = dest;
+    }
+    
+    public void AddReportiees(IEmployee emp){
+        reportees.Add(emp);
+    }
+    
+    public override void ShowRating(){
+        Console.WriteLine("Name : {0} Designation {2} Rating {1}", Name, Rating, Designation);
+        Console.WriteLine("**********Reportees of {0}'s Employees**********\n", Name);
+        foreach(var rep in reportees){
+            rep.ShowRating();
+        }
+    }
+}
+
+class HelloWorld {
+  static void Main() {
+    // Console.WriteLine("Hello World");
+    
+    Employee emp1 = new Employee("Haris", 5, "Junior Employee");
+    Employee emp2 = new Employee("Ammad", 4, "Senior Employee");
+    Supervisor manager = new Supervisor("Mubshair", 3, "Active Manager");
+    Supervisor smanager = new Supervisor("Hassan", 5, "Bakchoda Senior Manager");
+    Supervisor Ceo = new Supervisor("Funter Waqas", 0, "Bakchoda Ganga Bc Ceo");
+    Ceo.AddReportiees(smanager);
+    
+    manager.AddReportiees(emp1);
+    manager.AddReportiees(emp2);
+    // manager.ShowRating();
+    smanager.AddReportiees(manager);
+    Ceo.ShowRating();
+    
+  }
+}
